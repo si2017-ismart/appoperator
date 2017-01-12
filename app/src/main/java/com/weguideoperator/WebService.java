@@ -8,19 +8,27 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.ProtocolException;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import javax.net.ssl.HttpsURLConnection;
 
 /**
  * Created by Aline on 12/01/2017.
@@ -43,13 +51,11 @@ public class WebService {
         SharedPreferences sharedPreferences = context.getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
         final String etablissement = sharedPreferences.getString(keyEtablissement, null);
         final String login = sharedPreferences.getString(keyLogin,null);
-        final ArrayList<String> list = new ArrayList<String>();
-        boolean loginValid = false;
         Log.d("checkLogins", "methode appele");
         Thread t1 = new Thread(new Runnable() {
             @Override
             public void run() {
-                JSONObject parameters  = new JSONObject();
+                    JSONObject parameters   = new JSONObject();
                 try {
                     parameters.put("nom_etablissement", etablissement);
                     parameters.put("identifiant", login);
@@ -100,32 +106,46 @@ public class WebService {
     }
 
     private void sendPost(JSONObject parameters){
-
+        URL url;
         try {
-            URL urlToRequest = new URL(urlStr);
-            HttpURLConnection urlConnection = (HttpURLConnection) urlToRequest.openConnection();
-            urlConnection.setDoOutput(true);
-            /*urlConnection.setRequestMethod("POST");
-            urlConnection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");*/
+            url = new URL(urlStr);
 
-            String postParameters = parameters.toString();
-            //String postParameters = createQueryStringForParameters(parameters);
-            Log.d("json s",postParameters);
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setReadTimeout(15000);
+            conn.setConnectTimeout(15000);
+            conn.setRequestMethod("POST");
+            conn.setRequestProperty("Content-Type", "application/json");
+            conn.setRequestProperty("Accept","application/json");
+            conn.setDoInput(true);
+            conn.setDoOutput(true);
 
-            urlConnection.setFixedLengthStreamingMode(postParameters.getBytes().length);
+            postResult="";
+            OutputStream os = conn.getOutputStream();
+            BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(os, "UTF-8"));
+            Log.d("json",parameters.toString());
+            writer.write(parameters.toString());
 
-            //send the POST
-            PrintWriter out = new PrintWriter(urlConnection.getOutputStream());
-            out.print(postParameters);
-            out.close();
-
-            ArrayList<String> list = new ArrayList<String>();
-            Get(list);
-            String str = list.get(0);
-            postResult = str;
-            Log.d("post response", str);
-
-        } catch(IOException e) {
+            writer.flush();
+            writer.close();
+            os.close();
+            int responseCode=conn.getResponseCode();
+            if (responseCode == HttpsURLConnection.HTTP_OK) {
+                String line;
+                BufferedReader br=new BufferedReader(new InputStreamReader(conn.getInputStream()));
+                while ((line=br.readLine()) != null) {
+                    postResult+=line;
+                    Log.d("testResult",postResult);
+                }
+            }
+            else {
+                String line;
+                BufferedReader br=new BufferedReader(new InputStreamReader(conn.getErrorStream()));
+                while ((line=br.readLine()) != null) {
+                    postResult+=line;
+                    Log.d("resuslt",postResult);
+                }
+            }
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
