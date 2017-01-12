@@ -46,12 +46,8 @@ public class WebService {
     public static final String keyLogin = "keyLogin";
 
 
-<<<<<<< HEAD
-    public boolean checkLogins(Context context, final String password){
-=======
 
     public String checkLogins(Context context, final String password){
->>>>>>> ec53200de915dad6237badc9b9ead5eac8f0d307
 
         SharedPreferences sharedPreferences = context.getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
         final String etablissement = sharedPreferences.getString(keyEtablissement, null);
@@ -162,8 +158,7 @@ public class WebService {
 
         String sessionID, sessionDate, userName, userGender, userType, beaconID, beaconName, positionX, positionY;
         ArrayList<String> resultArray = new ArrayList<String>();
-
-        urlStr = ip+":3000/api/etablissements/operator_ack/"+idEtablissement;
+        urlStr = ip+":3000/api/etablissements/operator_ack/"+idEtablissement.substring(1,idEtablissement.length()-1);
         final ArrayList<String> beaconResult = new ArrayList<String>();
         Thread t1 = new Thread(new Runnable() {
             @Override
@@ -175,9 +170,10 @@ public class WebService {
         t1.start();
         try{
             t1.join();
-            String jsonStr = beaconResult.get(0);
-            if(!jsonStr.equals("Nothing")) {
-                JSONObject jsonObject = new JSONObject(jsonStr);
+            String jsonstr = beaconResult.get(0);
+            if(!jsonstr.equals("Nothing")) {
+
+                JSONObject jsonObject = new JSONObject(jsonstr);
                 JSONObject jsonObject1 = jsonObject.getJSONArray("sessions").getJSONObject(0);
                 sessionID = jsonObject1.getString("id");
                 sessionDate = jsonObject1.getString("date");
@@ -199,6 +195,7 @@ public class WebService {
                 resultArray.add(beaconName);
                 resultArray.add(positionX);
                 resultArray.add(positionY);
+
             }else{
                 resultArray.add("nothing");
             }

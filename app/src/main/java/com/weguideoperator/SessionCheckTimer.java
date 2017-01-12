@@ -44,17 +44,15 @@ public class SessionCheckTimer extends TimerTask{
     }
 
     private void completeTask() {
-        /*try {
-            sessionInfo = service.sessionAvailable(etablissement);
-            if(sessionInfo != null){
-                timer.cancel();
-                Intent intent = new Intent(context, DemandeAide.class);
-                intent.putExtra("sessionInfo", sessionInfo);
-                context.startActivity(intent);
-            }
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }*/
+        sessionInfo = service.sessionAvailable(etablissement);
+        Log.d("session",""+sessionInfo.size());
+        if(sessionInfo.size() != 0){
+            Log.d("sessionSimm","jkkjjk");
+            timer.cancel();
+            Intent intent = new Intent(context, DemandeAide.class);
+            intent.putExtra("sessionInfo", sessionInfo);
+            context.startActivity(intent);
+        }
     }
 
 

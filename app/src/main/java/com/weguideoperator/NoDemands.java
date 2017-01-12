@@ -17,6 +17,7 @@ public class NoDemands extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.aucune_demande);
         webService = new WebService();
+        setTimer();
     }
 
     public void setTimer() {
