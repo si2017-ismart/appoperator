@@ -69,7 +69,13 @@ public class WebService {
         });
 
         t1.start();
+        try {
+            t1.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         if(postResult.equals("true")){
+            Log.d("testTrue","ok");
             return true;
         }
         return false;
@@ -115,7 +121,7 @@ public class WebService {
             conn.setConnectTimeout(15000);
             conn.setRequestMethod("POST");
             conn.setRequestProperty("Content-Type", "application/json");
-            conn.setRequestProperty("Accept","application/json");
+            conn.setRequestProperty("Accept", "application/json");
             conn.setDoInput(true);
             conn.setDoOutput(true);
 
@@ -148,62 +154,6 @@ public class WebService {
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-
-    private String readInputStreamToString(HttpURLConnection connection) {
-        String result = null;
-        StringBuffer sb = new StringBuffer();
-        InputStream is = null;
-
-        try {
-            is = new BufferedInputStream(connection.getInputStream());
-            BufferedReader br = new BufferedReader(new InputStreamReader(is));
-            String inputLine = "";
-            while ((inputLine = br.readLine()) != null) {
-                sb.append(inputLine);
-            }
-            result = sb.toString();
-        }
-        catch (Exception e) {
-            Log.i("webservcie", "Error reading InputStream");
-            result = null;
-        }
-        finally {
-            if (is != null) {
-                try {
-                    is.close();
-                }
-                catch (IOException e) {
-                    Log.i("webservice", "Error closing InputStream");
-                }
-            }
-        }
-
-        return result;
-    }
-
-    private static String createQueryStringForParameters(Map<String, String> parameters) {
-        StringBuilder parametersAsQueryString = new StringBuilder();
-        if (parameters != null) {
-            boolean firstParameter = true;
-
-            for (String parameterName : parameters.keySet()) {
-                if (!firstParameter) {
-                    parametersAsQueryString.append(PARAMETER_DELIMITER);
-                }
-
-                try {
-                    parametersAsQueryString.append(parameterName)
-                            .append(PARAMETER_EQUALS_CHAR)
-                            .append(URLEncoder.encode(parameters.get(parameterName), "UTF-8"));
-                } catch (UnsupportedEncodingException e) {
-                    e.printStackTrace();
-                }
-
-                firstParameter = false;
-            }
-        }
-        return parametersAsQueryString.toString();
     }
 
 }
