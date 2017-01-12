@@ -18,6 +18,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
 
@@ -123,11 +125,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         editor.commit();
 
         WebService service = new WebService();
-        String idEtablisssement = service.checkLogins(this,ETPassword.getText().toString());
-        Log.d("ideta",idEtablisssement);
-        if( !idEtablisssement.equals("")) {
-            Log.d("iflk",idEtablisssement);
-            editor.putString(keyEtablissement, idEtablisssement);
+        ArrayList<String> ids = service.checkLogins(this,ETPassword.getText().toString());
+        if( ids.size() != 0) {
+            editor.putString(keyEtablissement, ids.get(0));
+            editor.putString(keyLogin, ids.get(1));
             editor.commit();
             return true;
         }

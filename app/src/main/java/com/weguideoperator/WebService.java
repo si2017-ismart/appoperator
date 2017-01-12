@@ -45,9 +45,9 @@ public class WebService {
     public static final String keyEtablissement = "keyEtablissement";
     public static final String keyLogin = "keyLogin";
 
+    private ArrayList<String> postArrayResult;
 
-
-    public String checkLogins(Context context, final String password){
+    public ArrayList<String> checkLogins(Context context, final String password){
 
         SharedPreferences sharedPreferences = context.getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
         final String etablissement = sharedPreferences.getString(keyEtablissement, null);
@@ -72,11 +72,19 @@ public class WebService {
         t1.start();
         try {
             t1.join();
+            postArrayResult = new ArrayList<String>();
+            JSONObject jsonObject = new JSONObject(postResult);
+            String idetablissement = jsonObject.getString("id_etablissement");
+            String intervenant = jsonObject.getString("id_intervenant");
+            postArrayResult.add(idetablissement);
+            postArrayResult.add(intervenant);
         } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (JSONException e) {
             e.printStackTrace();
         }
 
-        return postResult;
+        return postArrayResult;
     }
 
     private void Get(ArrayList<String> arraylist){
@@ -113,7 +121,7 @@ public class WebService {
         URL url;
         try {
             url = new URL(urlStr);
-
+            Log.d("tt", "jj");
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setReadTimeout(15000);
             conn.setConnectTimeout(15000);
@@ -124,9 +132,11 @@ public class WebService {
             conn.setDoOutput(true);
 
             postResult="";
+            Log.d("tt","kljll");
             OutputStream os = conn.getOutputStream();
+            Log.d("tt","opo");
             BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(os, "UTF-8"));
-            Log.d("json",parameters.toString());
+            Log.d("json", ""+parameters.toString());
             writer.write(parameters.toString());
 
             writer.flush();
@@ -138,8 +148,9 @@ public class WebService {
                 BufferedReader br=new BufferedReader(new InputStreamReader(conn.getInputStream()));
                 while ((line=br.readLine()) != null) {
                     postResult+=line;
-                    Log.d("testResult",postResult);
+                    Log.d("resuslt",postResult);
                 }
+                //finishLogins();
             }
             else {
                 String line;
@@ -154,11 +165,39 @@ public class WebService {
         }
     }
 
+    public void finishLogins(){
+        final ArrayList<String> resultArray = new ArrayList<String>();
+        Thread t1 = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                Get(resultArray);
+            }
+        });
+        t1.start();
+
+        try {
+            t1.join();
+            Log.d("json", "" + resultArray.size());
+            String jsonstr = resultArray.get(0);
+            JSONObject jsonObject = new JSONObject(jsonstr);
+            String etablissement = jsonObject.getString("id_etablissement");
+            String intervenant = jsonObject.getString("id_intervenant");
+            Log.d("kk", etablissement);
+            postArrayResult.add(etablissement);
+            postArrayResult.add(intervenant);
+
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
     public ArrayList<String> sessionAvailable(String idEtablissement){
 
         String sessionID, sessionDate, userName, userGender, userType, beaconID, beaconName, positionX, positionY;
         ArrayList<String> resultArray = new ArrayList<String>();
-        urlStr = ip+":3000/api/etablissements/operator_ack/"+idEtablissement.substring(1,idEtablissement.length()-1);
+        urlStr = ip+":3000/api/etablissements/operator_ack/"+idEtablissement;
         final ArrayList<String> beaconResult = new ArrayList<String>();
         Thread t1 = new Thread(new Runnable() {
             @Override
@@ -206,6 +245,65 @@ public class WebService {
             e.printStackTrace();
         }
         return resultArray;
+    }
+
+    public void disponible(Context context,final String tokenSession){
+        SharedPreferences sharedPreferences = context.getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+        final String login = sharedPreferences.getString(keyLogin,null);
+
+        Thread t1 = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                JSONObject parameters   = new JSONObject();
+                try {
+                    parameters.put("id_intervenant", login);
+                    parameters.put("token", tokenSession);
+                    urlStr = ip+":3000/api/etablissements/intervenants/takeSession";
+                    sendPost(parameters);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        t1.start();
+        try {
+            t1.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public boolean finishSession(final String token){
+
+        Thread t1 = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                JSONObject parameters   = new JSONObject();
+                try {
+
+                    parameters.put("token", token);
+                    urlStr = ip+":3000/api/etablissements/intervenants/endSession";
+                    sendPost(parameters);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        t1.start();
+        try {
+            t1.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        Log.d("pp", "finishSession: "+postResult);
+        if(postResult.equals("true")){
+            return true;
+        }
+        return false;
     }
 
 }

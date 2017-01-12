@@ -20,10 +20,15 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        
+
+
+
         <activity android:name=".DemandeAide" />
 
     <activity android:name=".NoDemands" />
+
+        <activity android:name=".AccepterMission" />
+
     </application>
 
 </manifest>
