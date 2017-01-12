@@ -29,7 +29,7 @@
 
     <ImageButton
         android:background="@null"
-        android:id="@+id/buttonOUI"
+        android:id="@+id/buttonHelp"
         android:layout_height="150dp"
         android:layout_width="150dp"
         android:src="@drawable/jyvais"
@@ -38,7 +38,7 @@
 
     <ImageButton
         android:background="@null"
-        android:id="@+id/buttonNON"
+        android:id="@+id/buttonCantHelp"
         android:layout_height="60dp"
         android:layout_width="150dp"
         android:src="@drawable/jpeuxpas"
