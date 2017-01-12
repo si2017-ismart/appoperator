@@ -46,12 +46,8 @@ public class WebService {
     public static final String keyLogin = "keyLogin";
 
 
-<<<<<<< HEAD
-    public boolean checkLogins(Context context, final String password){
-=======
 
     public String checkLogins(Context context, final String password){
->>>>>>> ec53200de915dad6237badc9b9ead5eac8f0d307
 
         SharedPreferences sharedPreferences = context.getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
         final String etablissement = sharedPreferences.getString(keyEtablissement, null);
@@ -179,15 +175,15 @@ public class WebService {
             if(!jsonStr.equals("Nothing")) {
                 JSONObject jsonObject = new JSONObject(jsonStr);
                 JSONObject jsonObject1 = jsonObject.getJSONArray("sessions").getJSONObject(0);
-                sessionID = jsonObject1.getString("id");
+                sessionID   = jsonObject1.getString("id");
                 sessionDate = jsonObject1.getString("date");
-                userName = jsonObject1.getJSONObject("user").getString("nom");
-                userGender = jsonObject1.getJSONObject("user").getString("sexe");
-                userType = jsonObject1.getJSONObject("user").getString("type");
-                beaconID = jsonObject1.getJSONObject("beacon").getString("id");
-                beaconName = jsonObject1.getJSONObject("beacon").getString("nom");
-                positionX = jsonObject1.getJSONObject("beacon").getJSONObject("position").getString("x");
-                positionY = jsonObject1.getJSONObject("beacon").getJSONObject("position").getString("y");
+                userName    = jsonObject1.getJSONObject("user").getString("nom");
+                userGender  = jsonObject1.getJSONObject("user").getString("sexe");
+                userType    = jsonObject1.getJSONObject("user").getString("type");
+                beaconID    = jsonObject1.getJSONObject("beacon").getString("id");
+                beaconName  = jsonObject1.getJSONObject("beacon").getString("nom");
+                positionX   = jsonObject1.getJSONObject("beacon").getJSONObject("position").getString("x");
+                positionY   = jsonObject1.getJSONObject("beacon").getJSONObject("position").getString("y");
 
 
                 resultArray.add(sessionID);
