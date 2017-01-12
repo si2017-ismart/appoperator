@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -43,7 +44,6 @@ public class WebService {
     public static final String MyPREFERENCES = "MyPrefs" ;
     public static final String keyEtablissement = "keyEtablissement";
     public static final String keyLogin = "keyLogin";
-
 
 
     public boolean checkLogins(Context context, final String password){
@@ -154,6 +154,59 @@ public class WebService {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public ArrayList<String> sessionAvailable(String idEtablissement){
+
+        String sessionID, sessionDate, userName, userGender, userType, beaconID, beaconName, positionX, positionY;
+        ArrayList<String> resultArray = new ArrayList<String>();
+
+        urlStr = ip+":3000/api/etablissements/operator_ack/"+idEtablissement;
+        final ArrayList<String> beaconResult = new ArrayList<String>();
+        Thread t1 = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                Get(beaconResult);
+            }
+        });
+
+        t1.start();
+        try{
+            t1.join();
+            String jsonStr = beaconResult.get(0);
+            if(!jsonStr.equals("Nothing")) {
+                JSONObject jsonObject = new JSONObject(jsonStr);
+                JSONObject jsonObject1 = jsonObject.getJSONArray("sessions").getJSONObject(0);
+                sessionID = jsonObject1.getString("id");
+                sessionDate = jsonObject1.getString("date");
+                userName = jsonObject1.getJSONObject("user").getString("nom");
+                userGender = jsonObject1.getJSONObject("user").getString("sexe");
+                userType = jsonObject1.getJSONObject("user").getString("type");
+                beaconID = jsonObject1.getJSONObject("beacon").getString("id");
+                beaconName = jsonObject1.getJSONObject("beacon").getString("nom");
+                positionX = jsonObject1.getJSONObject("beacon").getJSONObject("position").getString("x");
+                positionY = jsonObject1.getJSONObject("beacon").getJSONObject("position").getString("y");
+
+
+                resultArray.add(sessionID);
+                resultArray.add(sessionDate);
+                resultArray.add(userName);
+                resultArray.add(userGender);
+                resultArray.add(userType);
+                resultArray.add(beaconID);
+                resultArray.add(beaconName);
+                resultArray.add(positionX);
+                resultArray.add(positionY);
+            }else{
+                resultArray.add("nothing");
+            }
+
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return resultArray;
     }
 
 }
