@@ -175,15 +175,15 @@ public class WebService {
 
                 JSONObject jsonObject = new JSONObject(jsonstr);
                 JSONObject jsonObject1 = jsonObject.getJSONArray("sessions").getJSONObject(0);
-                sessionID = jsonObject1.getString("id");
+                sessionID   = jsonObject1.getString("id");
                 sessionDate = jsonObject1.getString("date");
-                userName = jsonObject1.getJSONObject("user").getString("nom");
-                userGender = jsonObject1.getJSONObject("user").getString("sexe");
-                userType = jsonObject1.getJSONObject("user").getString("type");
-                beaconID = jsonObject1.getJSONObject("beacon").getString("id");
-                beaconName = jsonObject1.getJSONObject("beacon").getString("nom");
-                positionX = jsonObject1.getJSONObject("beacon").getJSONObject("position").getString("x");
-                positionY = jsonObject1.getJSONObject("beacon").getJSONObject("position").getString("y");
+                userName    = jsonObject1.getJSONObject("user").getString("nom");
+                userGender  = jsonObject1.getJSONObject("user").getString("sexe");
+                userType    = jsonObject1.getJSONObject("user").getString("type");
+                beaconID    = jsonObject1.getJSONObject("beacon").getString("id");
+                beaconName  = jsonObject1.getJSONObject("beacon").getString("nom");
+                positionX   = jsonObject1.getJSONObject("beacon").getJSONObject("position").getString("x");
+                positionY   = jsonObject1.getJSONObject("beacon").getJSONObject("position").getString("y");
 
 
                 resultArray.add(sessionID);
