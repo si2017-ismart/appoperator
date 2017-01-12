@@ -15,6 +15,7 @@ public class NoDemands extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.aucune_demande);
         webService = new WebService();
     }
 

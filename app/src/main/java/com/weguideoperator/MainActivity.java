@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         sharedPreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
         if(sharedPreferences.getString(keyLogin,null)!=null) {
             Toast.makeText(this, "already login", Toast.LENGTH_LONG).show();
-            Intent intent = new Intent(this, DemandeAide.class);
+            Intent intent = new Intent(this, NoDemands.class);
             startActivity(intent);
             finish();
         }
@@ -60,9 +60,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onClick(View view) {
         if(checkEmptyFields()){
-            Log.d("onCLick", "if bon");
-            progressDialog = ProgressDialog.show(MainActivity.this, "Loging Up ...", "Please Wait ...", true);
-            progressDialog.setCancelable(true);
             new Thread(new Runnable() {
                 @Override
                 public void run() {
@@ -71,7 +68,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         //
                         // ------------------------
                         if(saveData()){
-                            Intent intent = new Intent(MainActivity.this, DemandeAide.class);
+                            Log.d("dkdll","okk");
+                            Intent intent = new Intent(MainActivity.this, NoDemands.class);
                             startActivity(intent);
                             finish();
                         }
@@ -88,7 +86,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     } catch (Exception e) {
 
                     }
-                    progressDialog.dismiss();
+
                 }
             }).start();
         }else{
@@ -125,7 +123,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         editor.commit();
 
         WebService service = new WebService();
-        return service.checkLogins(this,ETPassword.getText().toString());
+        String idEtablisssement = service.checkLogins(this,ETPassword.getText().toString());
+        Log.d("ideta",idEtablisssement);
+        if( !idEtablisssement.equals("")) {
+            Log.d("iflk",idEtablisssement);
+            editor.putString(keyEtablissement, idEtablisssement);
+            editor.commit();
+            return true;
+        }
+        return false;
 
 
     }
