@@ -19,6 +19,7 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -104,12 +105,12 @@ public class WebService {
             URL urlToRequest = new URL(urlStr);
             HttpURLConnection urlConnection = (HttpURLConnection) urlToRequest.openConnection();
             urlConnection.setDoOutput(true);
-            urlConnection.setRequestMethod("POST");
-            urlConnection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+            /*urlConnection.setRequestMethod("POST");
+            urlConnection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");*/
 
             String postParameters = parameters.toString();
             //String postParameters = createQueryStringForParameters(parameters);
-
+            Log.d("json s",postParameters);
 
             urlConnection.setFixedLengthStreamingMode(postParameters.getBytes().length);
 
@@ -118,7 +119,9 @@ public class WebService {
             out.print(postParameters);
             out.close();
 
-            String str = readInputStreamToString(urlConnection);
+            ArrayList<String> list = new ArrayList<String>();
+            Get(list);
+            String str = list.get(0);
             postResult = str;
             Log.d("post response", str);
 

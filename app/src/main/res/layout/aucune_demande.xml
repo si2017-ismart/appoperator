@@ -13,11 +13,11 @@
         android:src="@drawable/logo_operator"/>
 
     <TextView
-        android:id="@+id/needHelp"
+        android:id="@+id/nohelp"
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
         android:layout_below="@+id/imageView"
-        android:text="On a besoin de vous"
+        android:text="Aucune demande d'aide"
         android:textAlignment="center"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textColor="#ffffff"
@@ -27,22 +27,4 @@
         android:layout_marginTop="-20dp"
         android:textStyle="bold"/>
 
-    <ImageButton
-        android:background="@null"
-        android:id="@+id/buttonOUI"
-        android:layout_height="150dp"
-        android:layout_width="150dp"
-        android:src="@drawable/jyvais"
-        android:layout_gravity="center_horizontal"
-        android:scaleType="fitXY"/>
-
-    <ImageButton
-        android:background="@null"
-        android:id="@+id/buttonNON"
-        android:layout_height="60dp"
-        android:layout_width="150dp"
-        android:src="@drawable/jpeuxpas"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="30dp"
-        android:scaleType="fitXY"/>
 </LinearLayout>
