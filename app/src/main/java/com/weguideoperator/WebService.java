@@ -46,7 +46,12 @@ public class WebService {
     public static final String keyLogin = "keyLogin";
 
 
+<<<<<<< HEAD
     public boolean checkLogins(Context context, final String password){
+=======
+
+    public String checkLogins(Context context, final String password){
+>>>>>>> ec53200de915dad6237badc9b9ead5eac8f0d307
 
         SharedPreferences sharedPreferences = context.getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
         final String etablissement = sharedPreferences.getString(keyEtablissement, null);
@@ -74,11 +79,8 @@ public class WebService {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        if(postResult.equals("true")){
-            Log.d("testTrue","ok");
-            return true;
-        }
-        return false;
+
+        return postResult;
     }
 
     private void Get(ArrayList<String> arraylist){
