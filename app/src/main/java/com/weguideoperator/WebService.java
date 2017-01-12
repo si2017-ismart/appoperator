@@ -4,6 +4,9 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -41,32 +44,28 @@ public class WebService {
         final String login = sharedPreferences.getString(keyLogin,null);
         final ArrayList<String> list = new ArrayList<String>();
         boolean loginValid = false;
-        Log.d("checkLogins","methode appele");
+        Log.d("checkLogins", "methode appele");
         Thread t1 = new Thread(new Runnable() {
             @Override
             public void run() {
-                Map<String, String> parameters = new HashMap<String, String>();
-                parameters.put("nom_etablissement", etablissement);
-                parameters.put("identifiant", login);
-                parameters.put("password", password);
-                urlStr = ip+":3000/api/etablissements/intervenants/login";
-                sendPost(parameters);
+                JSONObject parameters  = new JSONObject();
+                try {
+                    parameters.put("nom_etablissement", etablissement);
+                    parameters.put("identifiant", login);
+                    parameters.put("password", password);
+                    urlStr = ip+":3000/api/etablissements/intervenants/login";
+                    sendPost(parameters);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
         });
 
         t1.start();
-
-        try{
-            t1.join();
-            String result = list.get(0);
-            if(result.equals("true")){
-                loginValid = true;
-            }
-
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+        if(postResult.equals("true")){
+            return true;
         }
-        return loginValid;
+        return false;
     }
 
     private void Get(ArrayList<String> arraylist){
@@ -99,7 +98,7 @@ public class WebService {
         arraylist.add(result);
     }
 
-    private void sendPost(Map<String, String> parameters){
+    private void sendPost(JSONObject parameters){
 
         try {
             URL urlToRequest = new URL(urlStr);
@@ -107,7 +106,11 @@ public class WebService {
             urlConnection.setDoOutput(true);
             urlConnection.setRequestMethod("POST");
             urlConnection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-            String postParameters = createQueryStringForParameters(parameters);
+
+            String postParameters = parameters.toString();
+            //String postParameters = createQueryStringForParameters(parameters);
+
+
             urlConnection.setFixedLengthStreamingMode(postParameters.getBytes().length);
 
             //send the POST
