@@ -8,6 +8,7 @@
         android:id="@+id/imageViewFind"
         android:layout_height="107dp"
         android:layout_width="wrap_content"
+        android:layout_marginTop="100dp"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:src="@drawable/logo_operator"/>
@@ -24,12 +25,13 @@
         android:layout_gravity="center_horizontal"
         android:textSize="30dp"
         android:layout_marginBottom="10dp"
-        android:layout_marginTop="-20dp"
         android:textStyle="bold"/>
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:layout_gravity="center_horizontal"
         android:id="@+id/buttonFinish"
         android:text="Mission Accomplie"/>
 

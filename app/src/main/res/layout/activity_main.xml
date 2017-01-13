@@ -21,7 +21,7 @@
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="0dp"
                 android:layout_marginBottom="24dp"
-                android:src="@drawable/logo_operator"/>
+                android:src="@drawable/logo_operator_black"/>
 
             <EditText
                 android:layout_height="wrap_content"
@@ -35,7 +35,7 @@
             android:layout_height="wrap_content"
             android:layout_width="match_parent"
             android:id="@+id/login"
-            android:hint="Login"
+                android:hint="Login"
             android:inputType="textCapWords"/>
 
             <EditText
