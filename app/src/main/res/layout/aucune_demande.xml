@@ -4,13 +4,16 @@
     android:layout_height="match_parent"
     android:background="@drawable/background">
 
+
     <ImageView
         android:id="@+id/imageViewFind"
         android:layout_height="107dp"
+        android:layout_marginTop="100dp"
         android:layout_width="wrap_content"
         android:layout_marginTop="100dp"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
+
         android:src="@drawable/logo_operator"/>
 
     <TextView
@@ -24,8 +27,12 @@
         android:textColor="#ffffff"
         android:layout_gravity="center_horizontal"
         android:textSize="30dp"
-        android:layout_marginBottom="10dp"
         android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+<<<<<<< HEAD
+        android:layout_marginTop="10dp"
+=======
+>>>>>>> 445799584fa85756fe9e8cae6f5cc8481536522e
         android:textStyle="bold"/>
 
 </LinearLayout>
