@@ -121,7 +121,7 @@ public class WebService {
         URL url;
         try {
             url = new URL(urlStr);
-            Log.d("tt", "jj");
+
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setReadTimeout(15000);
             conn.setConnectTimeout(15000);
@@ -132,25 +132,24 @@ public class WebService {
             conn.setDoOutput(true);
 
             postResult="";
-            Log.d("tt","kljll");
+            Log.d("debug","parameter :"+parameters.toString());
             OutputStream os = conn.getOutputStream();
-            Log.d("tt","opo");
             BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(os, "UTF-8"));
-            Log.d("json", ""+parameters.toString());
             writer.write(parameters.toString());
 
             writer.flush();
             writer.close();
             os.close();
             int responseCode=conn.getResponseCode();
+            Log.d("debug","responseCode"+responseCode);
             if (responseCode == HttpsURLConnection.HTTP_OK) {
+                Log.d("debug","ifOK");
                 String line;
                 BufferedReader br=new BufferedReader(new InputStreamReader(conn.getInputStream()));
                 while ((line=br.readLine()) != null) {
                     postResult+=line;
                     Log.d("resuslt",postResult);
                 }
-                //finishLogins();
             }
             else {
                 String line;
@@ -165,33 +164,6 @@ public class WebService {
         }
     }
 
-    public void finishLogins(){
-        final ArrayList<String> resultArray = new ArrayList<String>();
-        Thread t1 = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                Get(resultArray);
-            }
-        });
-        t1.start();
-
-        try {
-            t1.join();
-            Log.d("json", "" + resultArray.size());
-            String jsonstr = resultArray.get(0);
-            JSONObject jsonObject = new JSONObject(jsonstr);
-            String etablissement = jsonObject.getString("id_etablissement");
-            String intervenant = jsonObject.getString("id_intervenant");
-            Log.d("kk", etablissement);
-            postArrayResult.add(etablissement);
-            postArrayResult.add(intervenant);
-
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-    }
 
     public ArrayList<String> sessionAvailable(String idEtablissement){
 
@@ -282,9 +254,10 @@ public class WebService {
             public void run() {
                 JSONObject parameters   = new JSONObject();
                 try {
-
                     parameters.put("token", token);
                     urlStr = ip+":3000/api/etablissements/intervenants/endSession";
+                    addLogIntervention(token);
+                    Log.d("debug","send");
                     sendPost(parameters);
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -298,12 +271,24 @@ public class WebService {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-
-        Log.d("pp", "finishSession: "+postResult);
+        Log.d("debug", "postResult" + postResult);
         if(postResult.equals("true")){
             return true;
         }
         return false;
     }
+
+    public void addLogIntervention(final String token){
+
+        JSONObject parameters   = new JSONObject();
+        try {
+            parameters.put("token", token);
+            urlStr = ip+":3000/api/interventions/add";
+            sendPost(parameters);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
 
 }

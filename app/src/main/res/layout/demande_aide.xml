@@ -17,7 +17,7 @@
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
         android:layout_below="@+id/imageView"
-        android:text="On a besoin de vous"
+        android:text=""
         android:textAlignment="center"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textColor="#ffffff"
