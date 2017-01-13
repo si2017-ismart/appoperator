@@ -12,6 +12,8 @@ import java.util.ArrayList;
 
 /**
  * Created by Aline on 12/01/2017.
+ * Se lance lorsqu’une aide est demandée
+ * Récupération des informations sur la session d'aide accepté comme la position du beacon, le type d'handicap de l'utilisateur
  */
 public class DemandeAide  extends AppCompatActivity implements View.OnClickListener{
 

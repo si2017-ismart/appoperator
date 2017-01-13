@@ -20,6 +20,10 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
+/**
+ * Permet l’authentification de l’intervenant en questionnant le Webservice lors de la première utilisation
+ */
+
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
 

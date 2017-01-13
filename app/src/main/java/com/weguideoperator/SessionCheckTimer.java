@@ -11,6 +11,7 @@ import java.util.TimerTask;
 
 /**
  * Created by jadhaddad on 1/12/17.
+ * TimerTask qui vérifie toutes les cinq secondes si une demande d'aide est créee
  */
 
 public class SessionCheckTimer extends TimerTask{

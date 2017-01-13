@@ -16,6 +16,9 @@ import java.util.ArrayList;
 
 /**
  * Created by Aline on 12/01/2017.
+ * Se lance après l'acceptation de la mission
+ * Et gère la fin de la mission pour le Webservice archive la session et le mette dans les stats
+ * Code pour le déplacement de l'utilisateur commenté : à debugger
  */
 public class AccepterMission extends AppCompatActivity implements View.OnClickListener{
 
@@ -32,7 +35,7 @@ public class AccepterMission extends AppCompatActivity implements View.OnClickLi
 
     }
 
-    private void addNotification() {
+    /*private void addNotification() {
         Intent resultIntent = new Intent(this, AccepterMission.class);
         PendingIntent resultPendingIntent = PendingIntent.getActivity(
                 this, 0, resultIntent, PendingIntent.FLAG_UPDATE_CURRENT);
@@ -50,7 +53,7 @@ public class AccepterMission extends AppCompatActivity implements View.OnClickLi
         notificationManager.notify(0, builder.build());
 
 
-    }
+    }*/
 
 
 

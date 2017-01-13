@@ -33,6 +33,7 @@ import javax.net.ssl.HttpsURLConnection;
 
 /**
  * Created by Aline on 12/01/2017.
+ * contient toute les méthodes pour communiquer avec le WebService. (requête POST et GET)
  */
 public class WebService {
 
@@ -256,7 +257,7 @@ public class WebService {
                 try {
                     parameters.put("token", token);
                     urlStr = ip+":3000/api/etablissements/intervenants/endSession";
-                    addLogIntervention(token);
+                    //addLogIntervention(token);
                     Log.d("debug","send");
                     sendPost(parameters);
                 } catch (JSONException e) {
@@ -277,6 +278,7 @@ public class WebService {
         }
         return false;
     }
+
 
     public void addLogIntervention(final String token){
 

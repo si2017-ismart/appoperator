@@ -7,6 +7,7 @@ import java.util.Timer;
 
 /**
  * Created by jadhaddad on 1/12/17.
+ * Mets un timer qui questionne le webService sur les demandes d'aide
  */
 
 public class NoDemands extends Activity {
